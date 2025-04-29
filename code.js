@@ -5,14 +5,15 @@ function tsp_hk(distance_matrix) {
     }
     console.log(cities);
     let start = [...cities][0];
+    const cache = new Map();
 
     console.log(distance_matrix[start]);
 
-    return heldKarp(distance_matrix, cities, start);
+    heldKarp(distance_matrix, cities, start, cache);
+    //return -1;
 }
 
-function heldKarp(distance_matrix, cities, start) {
-    const cache = new Map();
+function heldKarp(distance_matrix, cities, start, cache) {
     let tourLen = undefined;
     // for (city of cities) {
     //     if (distance_matrix[start][city] != 0 && city != start) {
@@ -23,9 +24,13 @@ function heldKarp(distance_matrix, cities, start) {
     //console.log("end = ", end);
     if (Math.abs(cities.size) == 2) { //base case
         console.log("2 cities in set");
-        tourLen = distance_matrix[start][end];
-        console.log("tourLen = ", tourLen);
-        return tourLen;
+        for (let city of cities) {
+            if (city != start) {
+                tourLen = distance_matrix[start][city];
+                break;
+            }
+        }
+        return tourLen; //final result
     }
     else {
         //return the min of
@@ -34,13 +39,23 @@ function heldKarp(distance_matrix, cities, start) {
             if (city == start) {
                 continue;
             }
-            cities.delete(start);
+            let newCities = new Set(cities);
+            newCities.delete(start);
             console.log("removed start from cities. Cities = ", cities);
-            let totalDistance = heldKarp(distance_matrix, cities, city) + distance_matrix[start][city];
-            console.log("totalDistance = ", totalDistance);
-            if (totalDistance < minDist) {
-                minDist = totalDistance;
+            let key = JSON.stringify([...newCities].sort()) + "," + city;
+            let totalDistance = 0;
+            if (cache.has(key)) {
+                totalDistance = cache.get(key) + distance_matrix[start][city];
             }
+            else {
+                totalDistance = heldKarp(distance_matrix, newCities, city, cache) + distance_matrix[start][city];
+                console.log("totalDistance = ", totalDistance);
+                if (totalDistance < minDist) {
+                    minDist = totalDistance;
+                }
+            }
+            cache.set(key, minDist);
         }
+        return minDist; //needs to be stored in cache
     }
 }
