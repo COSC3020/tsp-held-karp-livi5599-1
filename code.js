@@ -1,4 +1,7 @@
 function tsp_hk(distance_matrix) {
+    if (distance_matrix.length == 0 || distance_matrix.length == 1) {
+        return 0;
+    }
     const cities = new Set();
     for (let city = 0; city < distance_matrix.length; city++) {
         cities.add(city);
