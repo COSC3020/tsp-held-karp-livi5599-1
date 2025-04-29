@@ -12,7 +12,7 @@ function tsp_hk(distance_matrix) {
 
     console.log(distance_matrix[start]);
 
-    heldKarp(distance_matrix, cities, start, cache);
+    return heldKarp(distance_matrix, cities, start, cache);
     //return -1;
 }
 
