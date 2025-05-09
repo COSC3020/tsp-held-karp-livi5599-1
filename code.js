@@ -52,14 +52,15 @@ function heldKarp(distance_matrix, cities, start, cache) {
                 console.log("distance_matrix[start][city] = ", distance_matrix[start][city]);
                 totalDistance = heldKarp(distance_matrix, newCities, city, cache) + distance_matrix[start][city];
                 console.log("totalDistance = ", totalDistance);
-                cache.set(key, minDist);
-                if (totalDistance < minDist) {
-                    minDist = totalDistance;
-                    console.log("new minDist = ", minDist);
-                }
+            }
+            if (totalDistance < minDist) {
+                minDist = totalDistance;
+                console.log("new minDist = ", minDist);
             }
             console.log("updated cache = ", cache);
         }
+        let finalKey = JSON.stringify([...cities].sort()) + "," + start;
+        cache.set(finalKey, minDist);
         return minDist; //needs to be stored in cache
     }
 }
