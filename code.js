@@ -23,12 +23,9 @@ function heldKarp(distance_matrix, cities, start, cache) {
         for (let city of cities) {
             console.log("city = ", city);
             if (city != start) {
-                tourLen = distance_matrix[start][city];
-                console.log("tourLen = ", tourLen);
-                break;
+                return distance_matrix[start][city];
             }
         }
-        return tourLen; //final result
     }
     else {
         //return the min of
