@@ -27,37 +27,34 @@ function heldKarp(distance_matrix, cities, start, cache) {
             }
         }
     }
-    else {
-        //return the min of
-        let minDist = Infinity;
-        for (city of cities) {
-            console.log("city = ", city);
-            if (city == start) {
-                continue;
-            }
-            let newCities = new Set(cities);
-            console.log("newCities = ", newCities);
-            newCities.delete(start);
-            console.log("removed start from cities. newCities = ", newCities);
-            let key = JSON.stringify([...newCities].sort()) + "," + city;
-            console.log("key = ", key);
-            let totalDistance = 0;
-            if (cache.has(key)) {
-                totalDistance = cache.get(key) + distance_matrix[start][city];
-            }
-            else {
-                console.log("distance_matrix[start][city] = ", distance_matrix[start][city]);
-                totalDistance = heldKarp(distance_matrix, newCities, city, cache) + distance_matrix[start][city];
-                console.log("totalDistance = ", totalDistance);
-            }
-            if (totalDistance < minDist) {
-                minDist = totalDistance;
-                console.log("new minDist = ", minDist);
-            }
-            console.log("updated cache = ", cache);
+    
+    let minDist = Infinity;
+    for (city of cities) {
+        console.log("city = ", city);
+        if (city == start) {
+            continue;
         }
-        let finalKey = JSON.stringify([...cities].sort()) + "," + start;
-        cache.set(finalKey, minDist);
-        return minDist; //needs to be stored in cache
+        let newCities = new Set(cities);
+        console.log("newCities = ", newCities);
+        newCities.delete(start);
+        console.log("removed start from cities. newCities = ", newCities);
+        let key = JSON.stringify([...newCities].sort()) + "," + city;
+        console.log("key = ", key);
+        let totalDistance = 0;
+        if (cache.has(key)) {
+            totalDistance = cache.get(key) + distance_matrix[start][city];
+        }
+        else {
+            console.log("distance_matrix[start][city] = ", distance_matrix[start][city]);
+            totalDistance = heldKarp(distance_matrix, newCities, city, cache) + distance_matrix[start][city];
+            console.log("totalDistance = ", totalDistance);
+        }
+        if (totalDistance < minDist) {
+            minDist = totalDistance;
+            console.log("new minDist = ", minDist);
+        }
+        cache.set(key, minDist);
+        console.log("updated cache = ", cache);
     }
+    return minDist;
 }
