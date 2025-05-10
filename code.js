@@ -46,7 +46,9 @@ function heldKarp(distance_matrix, cities, start, cache) {
         }
         else {
             console.log("distance_matrix[start][city] = ", distance_matrix[start][city]);
-            totalDistance = heldKarp(distance_matrix, newCities, city, cache) + distance_matrix[start][city];
+            let subProb = heldKarp(distance_matrix, newCities, city, cache);
+            cache.set(key, subProb);
+            totalDistance = subProb + distance_matrix[start][city];
             console.log("totalDistance = ", totalDistance);
         }
         if (totalDistance < minDist) {
