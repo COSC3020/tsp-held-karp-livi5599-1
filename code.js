@@ -2,27 +2,26 @@ function tsp_hk(distance_matrix) {
     if (distance_matrix.length == 0 || distance_matrix.length == 1) {
         return 0;
     }
+
     const cities = new Set(); //cities (including start) not visited yet
     for (let city = 0; city < distance_matrix.length; city++) {
         cities.add(city);
     }
     console.log(cities);
-    let start = [...cities][0];
+    const start = 0;
     const cache = new Map();
     console.log("cache = ", cache);
-
-    console.log(distance_matrix[start]);
-
+    
     return heldKarp(distance_matrix, cities, start, cache);
 }
 
 function heldKarp(distance_matrix, cities, start, cache) {
-    let tourLen = undefined;
     if (Math.abs(cities.size) == 2) { //base case
         console.log("2 cities in set");
         for (let city of cities) {
             console.log("city = ", city);
             if (city != start) {
+                console.log("returning ", distance_matrix[start][city]);
                 return distance_matrix[start][city];
             }
         }
@@ -47,16 +46,14 @@ function heldKarp(distance_matrix, cities, start, cache) {
         else {
             console.log("distance_matrix[start][city] = ", distance_matrix[start][city]);
             let subProb = heldKarp(distance_matrix, newCities, city, cache);
-            cache.set(key, subProb);
             totalDistance = subProb + distance_matrix[start][city];
             console.log("totalDistance = ", totalDistance);
+            cache.set(key, subProb);
         }
         if (totalDistance < minDist) {
             minDist = totalDistance;
             console.log("new minDist = ", minDist);
         }
-        cache.set(key, minDist);
-        console.log("updated cache = ", cache);
     }
     return minDist;
 }
