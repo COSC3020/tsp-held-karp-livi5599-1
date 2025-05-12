@@ -28,7 +28,7 @@ function heldKarp(distance_matrix, cities, start, cache) {
     }
     
     let minDist = Infinity;
-    for (city of cities) {
+    for (let city of cities) {
         console.log("city = ", city);
         if (city == start) {
             continue;
