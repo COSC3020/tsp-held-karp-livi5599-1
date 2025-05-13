@@ -3,14 +3,12 @@ function tsp_hk(distance_matrix) {
         return 0;
     }
 
-    const cities = new Set(); //cities (including start) not visited yet
+    const cities = new Set();
     for (let city = 0; city < distance_matrix.length; city++) {
         cities.add(city);
     }
-    console.log(cities);
     const start = 0;
     const cache = new Map();
-    console.log("cache = ", cache);
     
     return heldKarp(distance_matrix, cities, start, cache);
 }
@@ -24,13 +22,6 @@ function heldKarp(distance_matrix, cities, start, cache) {
         let otherCity = [...cities].find(city => city !== start);
         console.log("otherCity = ", otherCity);
         return distance_matrix[start][otherCity];
-        // for (let city of cities) {
-        //     console.log("city = ", city);
-        //     if (city != start) {
-        //         console.log("returning ", distance_matrix[start][city]);
-        //         return distance_matrix[start][city];
-        //     }
-        // }
     }
     
     let minDist = Infinity;
@@ -59,19 +50,7 @@ function heldKarp(distance_matrix, cities, start, cache) {
         let totalDistance = subProb + distance_matrix[start][city];
         console.log("SubProb distance:", subProb, "Total distance:", totalDistance);
         cache.set(key, subProb);
-        //else {
-            // console.log("Cache does not have key, calculating subproblem for:", key);
-            // //console.log("distance_matrix[start][city] = ", distance_matrix[start][city]);
-            // let subProb = heldKarp(distance_matrix, newCities, city, cache);
-            // totalDistance = subProb + distance_matrix[start][city];
-            // console.log("SubProb distance:", subProb, "Total distance:", totalDistance);
-            // cache.set(key, subProb);
-        //}
         minDist = Math.min(minDist, totalDistance);
-        // if (totalDistance < minDist) {
-        //     minDist = totalDistance;
-        //     console.log("new minDist = ", minDist);
-        // }
     }
     console.log("Returning minDist:", minDist);
     return minDist;
